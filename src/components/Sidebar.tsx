@@ -15,6 +15,7 @@ import {
   Megaphone,
   TrendingUp,
 } from 'lucide-react'
+import LogoCompact from './LogoCompact'
 
 const navItems = [
   { path: '/', icon: LayoutDashboard, label: 'Command Overview' },
@@ -40,8 +41,10 @@ export default function Sidebar() {
       className="w-64 bg-ghost-blue/80 glass border-r border-ghost-neon-blue/20 flex flex-col"
     >
       <div className="p-6 border-b border-ghost-neon-blue/20">
-        <h1 className="text-2xl font-bold neon-blue">GHOST</h1>
-        <p className="text-xs text-gray-400 mt-1">Tech for the People. Privacy Is Your Right.</p>
+        <div className="mb-3">
+          <LogoCompact />
+        </div>
+        <p className="text-xs text-gray-400 mt-2">Tech for the People. Privacy Is Your Right.</p>
       </div>
       
       <nav className="flex-1 p-4 space-y-2">

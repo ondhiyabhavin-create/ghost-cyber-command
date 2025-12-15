@@ -5,6 +5,7 @@ import ServiceHealthCard from '../components/ServiceHealthCard'
 import ThreatMap from '../components/ThreatMap'
 import IncidentAlert from '../components/IncidentAlert'
 import StrategicBroadcastConsole from '../components/StrategicBroadcastConsole'
+import Logo from '../components/Logo'
 import { Incident } from '../data/mockData'
 
 export default function CommandOverview() {
@@ -65,10 +66,15 @@ export default function CommandOverview() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-6"
+        className="mb-6 flex items-center justify-between"
       >
-        <h1 className="text-3xl font-bold neon-blue mb-2">Command Overview</h1>
-        <p className="text-gray-400">Common Operating Picture — Real-Time Infrastructure Monitoring</p>
+        <div>
+          <h1 className="text-3xl font-bold neon-blue mb-2">Command Overview</h1>
+          <p className="text-gray-400">Common Operating Picture — Real-Time Infrastructure Monitoring</p>
+        </div>
+        <div className="hidden lg:block">
+          <Logo />
+        </div>
       </motion.div>
 
       <AnimatePresence>
