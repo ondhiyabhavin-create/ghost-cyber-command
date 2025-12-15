@@ -20,8 +20,7 @@ export default function Footer() {
         </div>
         
         <div className="text-xs text-gray-500">
-          <div>© 2024 GHOST. All Rights Reserved.</div>
-          <div className="mt-1">CLASSIFIED // TOP SECRET</div>
+          <div>© 2025 GHOST. All Rights Reserved.</div>
         </div>
       </div>
     </motion.footer>
