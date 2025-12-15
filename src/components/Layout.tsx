@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
+import Footer from './Footer'
 import ClassificationBanner from './ClassificationBanner'
 
 interface LayoutProps {
@@ -22,6 +23,7 @@ export default function Layout({ children }: LayoutProps) {
         <main className="flex-1 overflow-auto grid-background">
           {children}
         </main>
+        <Footer />
       </div>
     </div>
   )
