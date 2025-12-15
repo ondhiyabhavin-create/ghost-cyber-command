@@ -8,11 +8,11 @@ export default function LogoCompact() {
       className="relative flex items-center justify-center"
     >
       <img
-        src="/ghost-logo.png"
+        src="/ghost-logo.svg"
         alt="GHOST Logo"
-        className="h-16 w-auto object-contain"
+        className="h-14 w-auto object-contain"
         style={{
-          filter: 'drop-shadow(0 0 8px rgba(255, 0, 64, 0.4))',
+          filter: 'drop-shadow(0 0 10px rgba(0, 229, 255, 0.6))',
         }}
       />
     </motion.div>

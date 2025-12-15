@@ -8,11 +8,11 @@ export default function Logo() {
       className="relative"
     >
       <img
-        src="/ghost-logo.png"
+        src="/ghost-logo.svg"
         alt="GHOST Logo"
-        className="h-32 w-auto object-contain drop-shadow-lg"
+        className="h-32 w-auto object-contain"
         style={{
-          filter: 'drop-shadow(0 0 10px rgba(255, 0, 64, 0.3))',
+          filter: 'drop-shadow(0 0 15px rgba(0, 229, 255, 0.5))',
         }}
       />
     </motion.div>
