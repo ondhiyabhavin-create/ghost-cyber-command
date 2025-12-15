@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Sword, Target, Zap, Shield, CheckCircle } from 'lucide-react'
+import { Target, Zap, Shield, CheckCircle } from 'lucide-react'
 
 export default function OffensiveOps() {
   const [authorized, setAuthorized] = useState(false)

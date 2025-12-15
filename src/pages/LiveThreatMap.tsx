@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { initialThreats, regions } from '../data/mockData'
-import { Shield, X, Zap, AlertTriangle } from 'lucide-react'
-import { Threat } from '../data/mockData'
+import { Shield, Zap, AlertTriangle } from 'lucide-react'
 import EscalationMeter from '../components/EscalationMeter'
 
 export default function LiveThreatMap() {
@@ -31,14 +30,14 @@ export default function LiveThreatMap() {
         let newState = t.escalationState
 
         if (count >= 3 && t.affectedRegions.length >= 3) {
-          newState = 4 // Strategic/State-Level
+          newState = 4 as const // Strategic/State-Level
         } else if (count >= 2 && t.affectedRegions.length >= 2) {
-          newState = Math.max(t.escalationState, 3) // National
+          newState = Math.max(t.escalationState, 3) as 1 | 2 | 3 | 4 // National
         } else if (count >= 2) {
-          newState = Math.max(t.escalationState, 2) // Coordinated
+          newState = Math.max(t.escalationState, 2) as 1 | 2 | 3 | 4 // Coordinated
         }
 
-        return { ...t, escalationState: newState as 1 | 2 | 3 | 4 }
+        return { ...t, escalationState: newState }
       })
     )
   }, [])

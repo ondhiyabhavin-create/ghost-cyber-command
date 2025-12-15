@@ -5,7 +5,7 @@ import ServiceHealthCard from '../components/ServiceHealthCard'
 import ThreatMap from '../components/ThreatMap'
 import IncidentAlert from '../components/IncidentAlert'
 import StrategicBroadcastConsole from '../components/StrategicBroadcastConsole'
-import { ServiceHealth, Incident } from '../data/mockData'
+import { Incident } from '../data/mockData'
 
 export default function CommandOverview() {
   const [services, setServices] = useState(initialServices)

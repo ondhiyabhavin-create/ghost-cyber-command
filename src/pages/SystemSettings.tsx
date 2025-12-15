@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Settings, Shield, Bell, Monitor, Database } from 'lucide-react'
+import { Shield, Bell, Monitor, Database } from 'lucide-react'
 
 export default function SystemSettings() {
   return (

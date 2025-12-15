@@ -13,13 +13,6 @@ const escalationLabels = {
   4: 'STRATEGIC',
 }
 
-const escalationColors = {
-  1: '#ff8800',
-  2: '#ff0040',
-  3: '#ff00ff',
-  4: '#ff00ff',
-}
-
 export default function EscalationMeter({ threat }: EscalationMeterProps) {
   const level = threat.escalationState
   const isNationalAlert = level >= 3

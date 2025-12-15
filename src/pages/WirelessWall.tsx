@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Wifi, Shield, Lock, Eye, EyeOff } from 'lucide-react'
+import { Wifi, Shield, Lock, EyeOff } from 'lucide-react'
 
 export default function WirelessWall() {
   return (
