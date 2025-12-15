@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <title>GHOST</title>
+  
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer Pentagon Shield -->
+  <path 
+    stroke="#00d4ff" 
+    stroke-width="3" 
+    fill="none" 
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    filter="url(#glow)"
+    d="M 50 15 L 85 39 L 73 80 L 27 80 L 15 39 Z"
+  />
+  
+  <!-- Inner Ghost Form -->
+  <path
+    fill="#1a1a2e"
+    stroke="#0a1929"
+    stroke-width="1.5"
+    d="M 50 30 C 50 30 65 32 65 40 L 60 65 L 50 75 L 40 65 L 35 40 C 35 32 50 30 50 30 Z"
+  />
+
+  <!-- AI Core / Radar Eye -->
+  <circle fill="#00d4ff" cx="50" cy="48" r="4" filter="url(#glow)"/>
+  <circle fill="none" stroke="#00d4ff" stroke-width="1" cx="50" cy="48" r="6" opacity="0.6"/>
+
+  <!-- Circuit Accents -->
+  <path stroke="#00d4ff" stroke-width="1.5" fill="none" d="M 38 60 L 38 55 L 45 55" filter="url(#glow)"/>
+  <circle fill="#00d4ff" cx="45" cy="55" r="1.2" filter="url(#glow)"/>
+
+  <path stroke="#00d4ff" stroke-width="1.5" fill="none" d="M 62 60 L 62 55 L 55 55" filter="url(#glow)"/>
+  <circle fill="#00d4ff" cx="55" cy="55" r="1.2" filter="url(#glow)"/>
+</svg>
