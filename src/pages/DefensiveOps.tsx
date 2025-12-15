@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Shield, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Shield, AlertTriangle, CheckCircle, FileSearch, BarChart3, TrendingUp } from 'lucide-react'
 
 export default function DefensiveOps() {
   return (
@@ -10,7 +10,7 @@ export default function DefensiveOps() {
         className="mb-6"
       >
         <h1 className="text-3xl font-bold neon-blue mb-2">Defensive Operations</h1>
-        <p className="text-gray-400">Network Control Device (NCD) Protection System</p>
+        <p className="text-gray-400">Sicilian Defense - NCD Protection with Vulnerability Assessment & Risk Management</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -163,21 +163,44 @@ export default function DefensiveOps() {
             transition={{ delay: 0.1 }}
             className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
           >
-            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue">Vulnerability Scan</h3>
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+              <FileSearch className="w-5 h-5" />
+              Continuous Incident Monitoring
+            </h3>
             <div className="space-y-2">
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-400">Risk Probability</span>
-                  <span className="font-bold">12%</span>
-                </div>
-                <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-ghost-neon-green"
-                    initial={{ width: 0 }}
-                    animate={{ width: '12%' }}
-                    transition={{ duration: 1 }}
-                  />
-                </div>
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">Internal Controls</div>
+                <div className="text-sm font-bold text-ghost-neon-green">Effective</div>
+              </div>
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">Network Operators Training</div>
+                <div className="text-sm font-bold">Proficient</div>
+              </div>
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">Data Sources Tracked</div>
+                <div className="text-sm font-bold">247 Active</div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+          >
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+              <FileSearch className="w-5 h-5" />
+              Vulnerability Assessment
+            </h3>
+            <div className="space-y-2">
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">Lifecycle Vulnerabilities</div>
+                <div className="text-sm font-bold">12 Identified</div>
+              </div>
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">Exploitation Likelihood</div>
+                <div className="text-sm font-bold text-ghost-neon-yellow">Low-Medium</div>
               </div>
               <div className="pt-2 border-t border-white/10">
                 <div className="text-xs text-gray-400">
@@ -190,7 +213,51 @@ export default function DefensiveOps() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.3 }}
+            className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+          >
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+              <BarChart3 className="w-5 h-5" />
+              Risk Management Framework
+            </h3>
+            <div className="space-y-2">
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">End-to-End Network Risks</div>
+                <div className="text-sm font-bold text-ghost-neon-green">Mapped</div>
+              </div>
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">Supply Chain Risks</div>
+                <div className="text-sm font-bold">Assessed</div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+          >
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+              <TrendingUp className="w-5 h-5" />
+              Cost-Benefit Prioritization
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400">Risk Probability</span>
+                <span className="font-bold">12%</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400">Priority Level</span>
+                <span className="font-bold text-ghost-neon-yellow">Medium</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
             className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
           >
             <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue">Threats Deflected</h3>

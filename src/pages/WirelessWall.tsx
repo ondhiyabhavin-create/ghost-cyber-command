@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Wifi, Shield, Lock, EyeOff } from 'lucide-react'
+import { Wifi, Shield, Lock, EyeOff, Key, UserCheck, MessageSquare, Network } from 'lucide-react'
 
 export default function WirelessWall() {
   return (
@@ -10,7 +10,7 @@ export default function WirelessWall() {
         className="mb-6"
       >
         <h1 className="text-3xl font-bold neon-blue mb-2">WirelessWall</h1>
-        <p className="text-gray-400">FIPS 140-2 Encryption & Invisible Network Security</p>
+        <p className="text-gray-400">End-to-End Encryption (E2EE) & Network Control Device (NCD) Security Platform</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -20,7 +20,7 @@ export default function WirelessWall() {
             animate={{ opacity: 1, scale: 1 }}
             className="h-[600px] bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-6 relative overflow-hidden"
           >
-            <h2 className="text-xl font-bold mb-4 text-ghost-neon-blue">Network Cloaking Visualization</h2>
+            <h2 className="text-xl font-bold mb-4 text-ghost-neon-blue">E2EE Network Control Device (NCD) Platform</h2>
             
             <div className="relative w-full h-full flex items-center justify-center">
               {/* Cloaking layer animation */}
@@ -169,7 +169,76 @@ export default function WirelessWall() {
             transition={{ delay: 0.2 }}
             className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
           >
-            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue">Real-Time Stats</h3>
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+              <Key className="w-5 h-5" />
+              Session Key Generation
+            </h3>
+            <div className="space-y-2">
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">Active Session Keys</div>
+                <div className="text-sm font-bold text-ghost-neon-blue">1,832</div>
+              </div>
+              <div className="p-2 bg-ghost-blue/30 rounded border border-white/10">
+                <div className="text-xs text-gray-400 mb-1">Key Rotation</div>
+                <div className="text-sm font-bold text-ghost-neon-green">Every 24h</div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+          >
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+              <UserCheck className="w-5 h-5" />
+              Identity Verification
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400">Verified Devices</span>
+                <span className="font-bold text-ghost-neon-green">247/247</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400">Verification Status</span>
+                <span className="font-bold text-ghost-neon-green">100%</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+          >
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+              <MessageSquare className="w-5 h-5" />
+              NCD Data Messaging
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400">Messages/sec</span>
+                <span className="font-bold">2,450</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400">E2EE Status</span>
+                <span className="font-bold text-ghost-neon-green">ACTIVE</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+          >
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+              <Network className="w-5 h-5" />
+              Real-Time Stats
+            </h3>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Data Encrypted</span>
