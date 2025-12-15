@@ -1,14 +1,60 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Radio, Send, Users, Globe, Shield, FileText } from 'lucide-react'
+import { Radio, Send, Users, Globe, Shield, FileText, AlertTriangle, Newspaper, Building2, Zap } from 'lucide-react'
 import { broadcastMessages } from '../data/mockData'
 import { BroadcastMessage } from '../data/mockData'
+
+interface RapidAlert {
+  id: string
+  type: 'authority' | 'news'
+  recipient: string
+  priority: 'low' | 'medium' | 'high' | 'critical'
+  message: string
+  status: 'pending' | 'sent' | 'delivered'
+  timestamp: Date
+}
 
 export default function BroadcastControl() {
   const [messages, setMessages] = useState(broadcastMessages)
   const [newMessage, setNewMessage] = useState({
     content: '',
     target: 'internal' as 'public' | 'internal' | 'allied',
+  })
+  const [rapidAlerts, setRapidAlerts] = useState<RapidAlert[]>([
+    {
+      id: '1',
+      type: 'authority',
+      recipient: 'FBI Cyber Division',
+      priority: 'critical',
+      message: 'Critical infrastructure attack detected - Immediate response required',
+      status: 'sent',
+      timestamp: new Date(Date.now() - 300000),
+    },
+    {
+      id: '2',
+      type: 'news',
+      recipient: 'CNN Breaking News',
+      priority: 'high',
+      message: 'National security alert - Public awareness campaign initiated',
+      status: 'delivered',
+      timestamp: new Date(Date.now() - 600000),
+    },
+    {
+      id: '3',
+      type: 'authority',
+      recipient: 'DHS CISA',
+      priority: 'high',
+      message: 'Election security threat mitigated - Status update',
+      status: 'sent',
+      timestamp: new Date(Date.now() - 900000),
+    },
+  ])
+  const [showRapidAlert, setShowRapidAlert] = useState(false)
+  const [newAlert, setNewAlert] = useState({
+    type: 'authority' as 'authority' | 'news',
+    recipient: '',
+    priority: 'high' as 'low' | 'medium' | 'high' | 'critical',
+    message: '',
   })
 
   const handleSend = () => {
@@ -52,6 +98,51 @@ export default function BroadcastControl() {
     )
   }
 
+  const handleSendRapidAlert = () => {
+    if (!newAlert.recipient.trim() || !newAlert.message.trim()) return
+    const alert: RapidAlert = {
+      id: `alert-${Date.now()}`,
+      ...newAlert,
+      status: 'pending',
+      timestamp: new Date(),
+    }
+    setRapidAlerts([alert, ...rapidAlerts])
+    setTimeout(() => {
+      setRapidAlerts((prev) =>
+        prev.map((a) => (a.id === alert.id ? { ...a, status: 'sent' } : a))
+      )
+      setTimeout(() => {
+        setRapidAlerts((prev) =>
+          prev.map((a) => (a.id === alert.id ? { ...a, status: 'delivered' } : a))
+        )
+      }, 1000)
+    }, 500)
+    setNewAlert({ type: 'authority', recipient: '', priority: 'high', message: '' })
+    setShowRapidAlert(false)
+  }
+
+  const priorityColors = {
+    low: 'text-gray-400',
+    medium: 'text-ghost-neon-yellow',
+    high: 'text-ghost-neon-red',
+    critical: 'text-red-500',
+  }
+
+  const authorityRecipients = [
+    'FBI Cyber Division',
+    'DHS CISA',
+    'NSA Cyber Command',
+    'US Secret Service',
+    'State Department Cyber',
+  ]
+  const newsOutlets = [
+    'CNN Breaking News',
+    'Reuters Alert Network',
+    'AP News Wire',
+    'BBC World Service',
+    'Associated Press',
+  ]
+
   const targetIcons = {
     public: Globe,
     internal: Shield,
@@ -71,9 +162,120 @@ export default function BroadcastControl() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6"
       >
-        <h1 className="text-3xl font-bold neon-blue mb-2">Broadcast Control</h1>
-        <p className="text-gray-400">Strategic Messaging & Counter-Propaganda Operations</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold neon-blue mb-2">Broadcast Control</h1>
+            <p className="text-gray-400">Strategic Messaging & Counter-Propaganda Operations</p>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowRapidAlert(!showRapidAlert)}
+            className="px-6 py-3 bg-ghost-neon-red/20 border border-ghost-neon-red/50 rounded-lg hover:bg-ghost-neon-red/30 transition-colors flex items-center gap-2"
+          >
+            <Zap className="w-5 h-5" />
+            <span className="font-bold">Rapid Alert</span>
+          </motion.button>
+        </div>
       </motion.div>
+
+      {/* Rapid Alert Panel */}
+      {showRapidAlert && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-ghost-neon-red/10 border-2 border-ghost-neon-red/50 rounded-lg p-6 mb-6"
+        >
+          <h2 className="text-xl font-bold mb-4 text-ghost-neon-red flex items-center gap-2">
+            <AlertTriangle className="w-6 h-6" />
+            Rapid Alert to Authorities & News Outlets
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm text-gray-400 mb-2 block">Alert Type</label>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setNewAlert({ ...newAlert, type: 'authority' })}
+                  className={`flex-1 px-4 py-2 rounded-lg border transition-all ${
+                    newAlert.type === 'authority'
+                      ? 'bg-ghost-neon-blue/20 border-ghost-neon-blue/50'
+                      : 'bg-ghost-blue/30 border-white/10'
+                  }`}
+                >
+                  <Building2 className="w-4 h-4 mx-auto mb-1" />
+                  <span className="text-xs font-bold">Authorities</span>
+                </button>
+                <button
+                  onClick={() => setNewAlert({ ...newAlert, type: 'news' })}
+                  className={`flex-1 px-4 py-2 rounded-lg border transition-all ${
+                    newAlert.type === 'news'
+                      ? 'bg-ghost-neon-blue/20 border-ghost-neon-blue/50'
+                      : 'bg-ghost-blue/30 border-white/10'
+                  }`}
+                >
+                  <Newspaper className="w-4 h-4 mx-auto mb-1" />
+                  <span className="text-xs font-bold">News Outlets</span>
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm text-gray-400 mb-2 block">Recipient</label>
+              <select
+                value={newAlert.recipient}
+                onChange={(e) => setNewAlert({ ...newAlert, recipient: e.target.value })}
+                className="w-full px-4 py-2 bg-ghost-dark border border-white/10 rounded-lg text-sm focus:outline-none focus:border-ghost-neon-blue/50"
+              >
+                <option value="">Select recipient...</option>
+                {(newAlert.type === 'authority' ? authorityRecipients : newsOutlets).map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-sm text-gray-400 mb-2 block">Priority</label>
+              <select
+                value={newAlert.priority}
+                onChange={(e) =>
+                  setNewAlert({ ...newAlert, priority: e.target.value as RapidAlert['priority'] })
+                }
+                className="w-full px-4 py-2 bg-ghost-dark border border-white/10 rounded-lg text-sm focus:outline-none focus:border-ghost-neon-blue/50"
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-sm text-gray-400 mb-2 block">Message</label>
+              <input
+                type="text"
+                value={newAlert.message}
+                onChange={(e) => setNewAlert({ ...newAlert, message: e.target.value })}
+                placeholder="Enter alert message..."
+                className="w-full px-4 py-2 bg-ghost-dark border border-white/10 rounded-lg text-sm focus:outline-none focus:border-ghost-neon-blue/50"
+              />
+            </div>
+          </div>
+          <div className="flex gap-2 mt-4">
+            <button
+              onClick={handleSendRapidAlert}
+              className="px-6 py-2 bg-ghost-neon-red/20 border border-ghost-neon-red/50 rounded-lg hover:bg-ghost-neon-red/30 transition-colors flex items-center gap-2"
+            >
+              <Zap className="w-4 h-4" />
+              <span className="font-bold">Send Rapid Alert</span>
+            </button>
+            <button
+              onClick={() => setShowRapidAlert(false)}
+              className="px-6 py-2 bg-ghost-blue/30 border border-white/10 rounded-lg hover:bg-white/5 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
@@ -273,8 +475,95 @@ export default function BroadcastControl() {
               </div>
             </div>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+          >
+            <h3 className="text-lg font-bold mb-4 text-ghost-neon-red flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5" />
+              Rapid Alerts
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">Sent Today</span>
+                <span className="text-sm font-bold">
+                  {rapidAlerts.filter((a) => a.status === 'sent' || a.status === 'delivered').length}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">To Authorities</span>
+                <span className="text-sm font-bold">
+                  {rapidAlerts.filter((a) => a.type === 'authority').length}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">To News Outlets</span>
+                <span className="text-sm font-bold">
+                  {rapidAlerts.filter((a) => a.type === 'news').length}
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
+
+      {/* Rapid Alerts List */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-6"
+      >
+        <h2 className="text-xl font-bold mb-4 text-ghost-neon-red flex items-center gap-2">
+          <AlertTriangle className="w-6 h-6" />
+          Recent Rapid Alerts
+        </h2>
+        <div className="space-y-3">
+          {rapidAlerts.map((alert) => (
+            <motion.div
+              key={alert.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="p-4 bg-ghost-blue/30 rounded-lg border border-white/10"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  {alert.type === 'authority' ? (
+                    <Building2 className="w-5 h-5 text-ghost-neon-blue" />
+                  ) : (
+                    <Newspaper className="w-5 h-5 text-ghost-neon-green" />
+                  )}
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-bold">{alert.recipient}</span>
+                      <span className={`text-xs px-2 py-1 rounded capitalize ${priorityColors[alert.priority]}`}>
+                        {alert.priority}
+                      </span>
+                      <span
+                        className={`text-xs px-2 py-1 rounded ${
+                          alert.status === 'delivered'
+                            ? 'bg-ghost-neon-green/20 text-ghost-neon-green'
+                            : alert.status === 'sent'
+                            ? 'bg-ghost-neon-yellow/20 text-ghost-neon-yellow'
+                            : 'bg-gray-500/20 text-gray-400'
+                        }`}
+                      >
+                        {alert.status.toUpperCase()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-300">{alert.message}</p>
+                  </div>
+                </div>
+                <span className="text-xs text-gray-500">
+                  {alert.timestamp.toLocaleTimeString()}
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </div>
   )
 }

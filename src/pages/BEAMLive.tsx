@@ -1,13 +1,90 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Radio, Video, MapPin, Activity, Zap } from 'lucide-react'
+import { Radio, Video, MapPin, Activity, Zap, MessageSquare, Mic, Send, Phone } from 'lucide-react'
+
+interface Message {
+  id: string
+  type: 'text' | 'voice'
+  content: string
+  sender: string
+  timestamp: Date
+  status: 'sending' | 'delivered' | 'read'
+}
 
 export default function BEAMLive() {
+  const [activeTab, setActiveTab] = useState<'streams' | 'messaging'>('streams')
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      type: 'text',
+      content: 'Field team reporting: All systems operational',
+      sender: 'Field Team Alpha',
+      timestamp: new Date(Date.now() - 300000),
+      status: 'read',
+    },
+    {
+      id: '2',
+      type: 'voice',
+      content: 'Voice message: 0:45',
+      sender: 'Command Center',
+      timestamp: new Date(Date.now() - 180000),
+      status: 'delivered',
+    },
+    {
+      id: '3',
+      type: 'text',
+      content: 'Threat detected in Sector 7. Requesting immediate response.',
+      sender: 'Security Unit',
+      timestamp: new Date(Date.now() - 60000),
+      status: 'read',
+    },
+  ])
+  const [newMessage, setNewMessage] = useState('')
+  const [isRecording, setIsRecording] = useState(false)
+
   const feeds = [
     { id: 1, name: 'Feed Alpha', type: 'video', status: 'live', latency: 120 },
     { id: 2, name: 'Feed Beta', type: 'iot', status: 'live', latency: 85 },
     { id: 3, name: 'Feed Gamma', type: 'gps', status: 'live', latency: 45 },
     { id: 4, name: 'Feed Delta', type: 'sensor', status: 'live', latency: 200 },
   ]
+
+  const handleSendMessage = () => {
+    if (!newMessage.trim()) return
+    const message: Message = {
+      id: `msg-${Date.now()}`,
+      type: 'text',
+      content: newMessage,
+      sender: 'You',
+      timestamp: new Date(),
+      status: 'sending',
+    }
+    setMessages([message, ...messages])
+    setNewMessage('')
+    setTimeout(() => {
+      setMessages((prev) =>
+        prev.map((m) => (m.id === message.id ? { ...m, status: 'delivered' } : m))
+      )
+    }, 500)
+  }
+
+  const handleVoiceMessage = () => {
+    setIsRecording(!isRecording)
+    if (!isRecording) {
+      setTimeout(() => {
+        setIsRecording(false)
+        const voiceMessage: Message = {
+          id: `voice-${Date.now()}`,
+          type: 'voice',
+          content: 'Voice message: 0:32',
+          sender: 'You',
+          timestamp: new Date(),
+          status: 'delivered',
+        }
+        setMessages([voiceMessage, ...messages])
+      }, 2000)
+    }
+  }
 
   return (
     <div className="h-full p-6 space-y-6">
@@ -20,14 +97,41 @@ export default function BEAMLive() {
         <p className="text-gray-400">Unified Communication & Real-Time Data Streams</p>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="space-y-4"
-          >
-            {feeds.map((feed, index) => (
+      {/* Tab Navigation */}
+      <div className="flex gap-2 mb-6">
+        <button
+          onClick={() => setActiveTab('streams')}
+          className={`px-6 py-3 rounded-lg border transition-all ${
+            activeTab === 'streams'
+              ? 'bg-ghost-neon-blue/20 border-ghost-neon-blue/50 text-ghost-neon-blue'
+              : 'bg-ghost-blue/30 border-white/10 text-gray-400 hover:bg-white/5'
+          }`}
+        >
+          <Radio className="w-5 h-5 inline mr-2" />
+          Live Streams
+        </button>
+        <button
+          onClick={() => setActiveTab('messaging')}
+          className={`px-6 py-3 rounded-lg border transition-all ${
+            activeTab === 'messaging'
+              ? 'bg-ghost-neon-blue/20 border-ghost-neon-blue/50 text-ghost-neon-blue'
+              : 'bg-ghost-blue/30 border-white/10 text-gray-400 hover:bg-white/5'
+          }`}
+        >
+          <MessageSquare className="w-5 h-5 inline mr-2" />
+          Text & Voice Messaging
+        </button>
+      </div>
+
+      {activeTab === 'streams' ? (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="space-y-4"
+            >
+              {feeds.map((feed, index) => (
               <motion.div
                 key={feed.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -196,6 +300,165 @@ export default function BEAMLive() {
           </motion.div>
         </div>
       </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-6 h-[600px] flex flex-col"
+            >
+              <h2 className="text-xl font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+                <MessageSquare className="w-6 h-6" />
+                Agile Messaging Hub
+              </h2>
+
+              {/* Messages List */}
+              <div className="flex-1 overflow-y-auto space-y-3 mb-4">
+                {messages.map((message) => (
+                  <motion.div
+                    key={message.id}
+                    initial={{ opacity: 0, x: message.sender === 'You' ? 20 : -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className={`p-3 rounded-lg border ${
+                      message.sender === 'You'
+                        ? 'bg-ghost-neon-blue/20 border-ghost-neon-blue/50 ml-auto max-w-[80%]'
+                        : 'bg-ghost-blue/30 border-white/10 max-w-[80%]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-bold text-gray-300">{message.sender}</span>
+                      <span className="text-xs text-gray-500">
+                        {message.timestamp.toLocaleTimeString()}
+                      </span>
+                    </div>
+                    {message.type === 'text' ? (
+                      <p className="text-sm">{message.content}</p>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Mic className="w-4 h-4 text-ghost-neon-blue" />
+                        <span className="text-sm">{message.content}</span>
+                        <motion.div
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                          className="w-2 h-2 bg-ghost-neon-blue rounded-full"
+                        />
+                      </div>
+                    )}
+                    {message.status === 'sending' && (
+                      <div className="text-xs text-gray-500 mt-1">Sending...</div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Message Input */}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  placeholder="Type a message..."
+                  className="flex-1 px-4 py-2 bg-ghost-dark border border-white/10 rounded-lg text-sm focus:outline-none focus:border-ghost-neon-blue/50"
+                />
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleVoiceMessage}
+                  className={`px-4 py-2 rounded-lg border transition-all ${
+                    isRecording
+                      ? 'bg-ghost-neon-red/20 border-ghost-neon-red/50 text-ghost-neon-red'
+                      : 'bg-ghost-blue/30 border-white/10 hover:bg-white/5'
+                  }`}
+                >
+                  <Mic className="w-5 h-5" />
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleSendMessage}
+                  className="px-4 py-2 bg-ghost-neon-blue/20 border border-ghost-neon-blue/50 rounded-lg hover:bg-ghost-neon-blue/30 transition-colors"
+                >
+                  <Send className="w-5 h-5" />
+                </motion.button>
+              </div>
+              {isRecording && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="mt-2 text-center"
+                >
+                  <div className="flex items-center justify-center gap-2 text-ghost-neon-red">
+                    <motion.div
+                      animate={{ scale: [1, 1.5, 1] }}
+                      transition={{ duration: 0.5, repeat: Infinity }}
+                      className="w-3 h-3 bg-ghost-neon-red rounded-full"
+                    />
+                    <span className="text-sm font-bold">Recording...</span>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+
+          <div className="space-y-4">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+            >
+              <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue flex items-center gap-2">
+                <Phone className="w-5 h-5" />
+                Communication Stats
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-400">Active Channels</span>
+                  <span className="text-sm font-bold">12</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-400">Messages Today</span>
+                  <span className="text-sm font-bold">{messages.length}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-400">Avg Response Time</span>
+                  <span className="text-sm font-bold text-ghost-neon-green">2.3s</span>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-4"
+            >
+              <h3 className="text-lg font-bold mb-4 text-ghost-neon-blue">Message Types</h3>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-2 bg-ghost-blue/30 rounded border border-white/10">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4 text-ghost-neon-blue" />
+                    <span className="text-sm">Text Messages</span>
+                  </div>
+                  <span className="text-xs text-ghost-neon-green">
+                    {messages.filter((m) => m.type === 'text').length}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-2 bg-ghost-blue/30 rounded border border-white/10">
+                  <div className="flex items-center gap-2">
+                    <Mic className="w-4 h-4 text-ghost-neon-green" />
+                    <span className="text-sm">Voice Messages</span>
+                  </div>
+                  <span className="text-xs text-ghost-neon-green">
+                    {messages.filter((m) => m.type === 'voice').length}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

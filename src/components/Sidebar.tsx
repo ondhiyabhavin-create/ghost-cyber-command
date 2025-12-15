@@ -14,6 +14,8 @@ import {
   Settings,
   Megaphone,
   TrendingUp,
+  Vote,
+  Bell,
 } from 'lucide-react'
 import LogoCompact from './LogoCompact'
 
@@ -21,6 +23,7 @@ const navItems = [
   { path: '/', icon: LayoutDashboard, label: 'Command Overview' },
   { path: '/threat-map', icon: Globe, label: 'Live Threat Map' },
   { path: '/incidents', icon: AlertTriangle, label: 'Open Incidents' },
+  { path: '/indication-warning', icon: Bell, label: 'Indication & Warning' },
   { path: '/ai-control', icon: Brain, label: 'AI Control Tower' },
   { path: '/defensive-ops', icon: Shield, label: 'Defensive Ops' },
   { path: '/offensive-ops', icon: Sword, label: 'Offensive Ops' },
@@ -28,6 +31,7 @@ const navItems = [
   { path: '/flash-alert', icon: Zap, label: 'Flash Alert' },
   { path: '/beam-live', icon: Radio, label: 'BEAM Live' },
   { path: '/broadcast', icon: Megaphone, label: 'Broadcast Control' },
+  { path: '/election-security', icon: Vote, label: 'Election Security' },
   { path: '/value-metrics', icon: TrendingUp, label: 'Value Metrics' },
   { path: '/audit-logs', icon: FileText, label: 'Audit & Logs' },
   { path: '/settings', icon: Settings, label: 'System Settings' },

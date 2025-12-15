@@ -14,6 +14,8 @@ import AuditLogs from './pages/AuditLogs'
 import SystemSettings from './pages/SystemSettings'
 import BroadcastControl from './pages/BroadcastControl'
 import ValueMetrics from './pages/ValueMetrics'
+import ElectionSecurity from './pages/ElectionSecurity'
+import IndicationWarning from './pages/IndicationWarning'
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
             <Route path="/beam-live" element={<BEAMLive />} />
             <Route path="/broadcast" element={<BroadcastControl />} />
             <Route path="/value-metrics" element={<ValueMetrics />} />
+            <Route path="/election-security" element={<ElectionSecurity />} />
+            <Route path="/indication-warning" element={<IndicationWarning />} />
             <Route path="/audit-logs" element={<AuditLogs />} />
             <Route path="/settings" element={<SystemSettings />} />
           </Routes>

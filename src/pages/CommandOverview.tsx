@@ -7,10 +7,34 @@ import IncidentAlert from '../components/IncidentAlert'
 import StrategicBroadcastConsole from '../components/StrategicBroadcastConsole'
 import Logo from '../components/Logo'
 import { Incident } from '../data/mockData'
+import { Brain, Zap, Shield, Activity } from 'lucide-react'
 
 export default function CommandOverview() {
   const [services, setServices] = useState(initialServices)
   const [alertIncident, setAlertIncident] = useState<Incident | null>(null)
+  const [autonomousActions] = useState([
+    {
+      id: '1',
+      type: 'auto_mitigation',
+      description: 'AI automatically blocked 47 malicious IPs',
+      timestamp: new Date(Date.now() - 120000),
+      status: 'completed',
+    },
+    {
+      id: '2',
+      type: 'auto_alert',
+      description: 'Autonomous alert sent to DHS CISA',
+      timestamp: new Date(Date.now() - 300000),
+      status: 'completed',
+    },
+    {
+      id: '3',
+      type: 'auto_response',
+      description: 'AI initiated counter-measures on Power Grid',
+      timestamp: new Date(Date.now() - 600000),
+      status: 'in_progress',
+    },
+  ])
 
   useEffect(() => {
     // Simulate real-time updates
@@ -147,6 +171,107 @@ export default function CommandOverview() {
         className="mt-6"
       >
         <StrategicBroadcastConsole />
+      </motion.div>
+
+      {/* Autonomous Crisis Management */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mt-6"
+      >
+        <div className="bg-ghost-blue/50 glass rounded-lg border border-ghost-neon-blue/20 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-ghost-neon-blue flex items-center gap-2">
+              <Brain className="w-6 h-6" />
+              Autonomous Crisis Management
+            </h2>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-ghost-neon-green rounded-full animate-pulse" />
+              <span className="text-sm font-bold text-ghost-neon-green">AI ACTIVE</span>
+            </div>
+          </div>
+          <p className="text-sm text-gray-400 mb-4">
+            AI-driven autonomous responses and decision-making for crisis management, indication & warning, and broadcasting services.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {[
+              {
+                label: 'Auto-Responses',
+                value: '127',
+                icon: Zap,
+                color: 'text-ghost-neon-blue',
+                description: 'Autonomous actions taken',
+              },
+              {
+                label: 'Threats Mitigated',
+                value: '89',
+                icon: Shield,
+                color: 'text-ghost-neon-green',
+                description: 'AI-blocked attacks',
+              },
+              {
+                label: 'Decision Latency',
+                value: '0.8s',
+                icon: Activity,
+                color: 'text-ghost-neon-yellow',
+                description: 'Avg response time',
+              },
+            ].map((stat, index) => {
+              const Icon = stat.icon
+              return (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                  className="bg-ghost-blue/30 rounded-lg border border-white/10 p-4"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <Icon className={`w-5 h-5 ${stat.color}`} />
+                    <span className="text-xs text-gray-400">{stat.label}</span>
+                  </div>
+                  <div className={`text-2xl font-bold ${stat.color} mb-1`}>{stat.value}</div>
+                  <div className="text-xs text-gray-500">{stat.description}</div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold mb-3 text-ghost-neon-blue">Recent Autonomous Actions</h3>
+            <div className="space-y-2">
+              {autonomousActions.map((action) => (
+                <motion.div
+                  key={action.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center justify-between p-3 bg-ghost-blue/30 rounded-lg border border-white/10"
+                >
+                  <div className="flex items-center gap-3">
+                    <Brain className="w-5 h-5 text-ghost-neon-blue" />
+                    <div>
+                      <p className="text-sm font-bold">{action.description}</p>
+                      <p className="text-xs text-gray-500">
+                        {action.timestamp.toLocaleTimeString()}
+                      </p>
+                    </div>
+                  </div>
+                  <span
+                    className={`text-xs px-2 py-1 rounded ${
+                      action.status === 'completed'
+                        ? 'bg-ghost-neon-green/20 text-ghost-neon-green'
+                        : 'bg-ghost-neon-yellow/20 text-ghost-neon-yellow'
+                    }`}
+                  >
+                    {action.status === 'completed' ? 'COMPLETED' : 'IN PROGRESS'}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
       </motion.div>
     </div>
   )
