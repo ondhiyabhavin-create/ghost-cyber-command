@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { initialIncidents } from '../data/mockData'
-import { Clock, Shield, Zap, CheckCircle, AlertCircle, Wifi, Truck } from 'lucide-react'
+import { Clock, Shield, Zap, CheckCircle, AlertCircle, Wifi, Truck, Lock } from 'lucide-react'
 import { Incident } from '../data/mockData'
 import FieldResponseCard from '../components/FieldResponseCard'
 
@@ -20,11 +20,36 @@ const statusColors = {
 }
 
 export default function OpenIncidents() {
-  const [incidents] = useState(initialIncidents)
+  const [incidents, setIncidents] = useState(initialIncidents)
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(
     incidents[0] || null
   )
   const [responseMode, setResponseMode] = useState<'remote' | 'hardware'>('remote')
+
+  const handleSecureIncident = (incidentId: string) => {
+    setIncidents((prev) =>
+      prev.map((inc) => {
+        if (inc.id === incidentId && inc.status !== 'neutralized') {
+          const updatedIncident: Incident = {
+            ...inc,
+            status: 'neutralized',
+            timeline: [
+              ...inc.timeline,
+              {
+                stage: 'Secured & Neutralized',
+                timestamp: new Date().toISOString(),
+              },
+            ],
+          }
+          if (selectedIncident?.id === incidentId) {
+            setSelectedIncident(updatedIncident)
+          }
+          return updatedIncident
+        }
+        return inc
+      })
+    )
+  }
 
   return (
     <div className="h-full p-6 space-y-6">
@@ -240,6 +265,65 @@ export default function OpenIncidents() {
                   ))}
                 </div>
               </div>
+
+              {/* Action Buttons */}
+              {selectedIncident.status !== 'neutralized' && (
+                <div className="mt-6 pt-6 border-t border-white/10">
+                  <div className="flex gap-4">
+                    <motion.button
+                      onClick={() => handleSecureIncident(selectedIncident.id)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 px-6 py-3 bg-ghost-neon-green/20 border border-ghost-neon-green/50 rounded-lg hover:bg-ghost-neon-green/30 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Lock className="w-5 h-5 text-ghost-neon-green" />
+                      <span className="font-bold text-ghost-neon-green">Secure Incident</span>
+                    </motion.button>
+                    {selectedIncident.status === 'contained' && (
+                      <motion.button
+                        onClick={() => {
+                          setIncidents((prev) =>
+                            prev.map((inc) =>
+                              inc.id === selectedIncident.id
+                                ? {
+                                    ...inc,
+                                    status: 'counter_attack',
+                                    timeline: [
+                                      ...inc.timeline,
+                                      {
+                                        stage: 'Counter-Attack Initiated',
+                                        timestamp: new Date().toISOString(),
+                                      },
+                                    ],
+                                  }
+                                : inc
+                            )
+                          )
+                          if (selectedIncident) {
+                            setSelectedIncident({
+                              ...selectedIncident,
+                              status: 'counter_attack',
+                              timeline: [
+                                ...selectedIncident.timeline,
+                                {
+                                  stage: 'Counter-Attack Initiated',
+                                  timestamp: new Date().toISOString(),
+                                },
+                              ],
+                            })
+                          }
+                        }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="px-6 py-3 bg-ghost-neon-blue/20 border border-ghost-neon-blue/50 rounded-lg hover:bg-ghost-neon-blue/30 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Zap className="w-5 h-5 text-ghost-neon-blue" />
+                        <span className="font-bold text-ghost-neon-blue">Counter-Attack</span>
+                      </motion.button>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
