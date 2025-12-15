@@ -12,7 +12,7 @@ export default function Logo() {
         alt="GHOST Logo"
         className="h-32 w-auto object-contain"
         style={{
-          filter: 'drop-shadow(0 0 15px rgba(0, 229, 255, 0.5))',
+          filter: 'drop-shadow(0 0 20px rgba(0, 212, 255, 0.6))',
         }}
       />
     </motion.div>

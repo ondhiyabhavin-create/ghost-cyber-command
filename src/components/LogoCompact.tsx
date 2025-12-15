@@ -10,9 +10,9 @@ export default function LogoCompact() {
       <img
         src="/ghost-logo.svg"
         alt="GHOST Logo"
-        className="h-14 w-auto object-contain"
+        className="h-16 w-auto object-contain"
         style={{
-          filter: 'drop-shadow(0 0 10px rgba(0, 229, 255, 0.6))',
+          filter: 'drop-shadow(0 0 12px rgba(0, 212, 255, 0.7))',
         }}
       />
     </motion.div>

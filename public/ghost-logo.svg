@@ -1,105 +1,75 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 100" width="250" height="100">
-
-  <title>GHOST Cyber Command Center - Primary Logo (Variant A)</title>
-
-  <style>
-
-    .ghost-fill { fill: #0B0F14; }
-
-    .ghost-stroke { stroke: #1E2A38; }
-
-    .ghost-accent { fill: #00E5FF; stroke: #00E5FF; }
-
-    .ghost-text-fill { fill: #FFFFFF; }
-
-  </style>
-
+  <title>GHOST Cyber Command Center</title>
   
-
-  <!-- Icon Group (Scaled and positioned left) -->
-
-  <g transform="translate(0, 0) scale(0.8)">
-
-    <!-- Outer Pentagon Shield -->
-
-    <path 
-
-      class="ghost-stroke" 
-
-      stroke-width="2.5" 
-
-      fill="none" 
-
-      stroke-linejoin="round"
-
-      d="M 50 15 L 85 39 L 73 80 L 27 80 L 15 39 Z"
-
-    />
-
+  <defs>
+    <!-- Neon glow filter for shield -->
+    <filter id="shield-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
     
+    <!-- Glow for accent elements -->
+    <filter id="accent-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
 
-    <!-- Inner Symbol (Ghost Form fill) -->
-
-    <path
-
-      class="ghost-fill"
-
-      d="M 50 30 C 50 30 65 32 65 40 L 60 65 L 50 75 L 40 65 L 35 40 C 35 32 50 30 50 30 Z"
-
+  <!-- Icon Group: Shield with Ghost -->
+  <g transform="translate(0, 10)">
+    <!-- Outer Pentagon Shield with neon blue glow -->
+    <path 
+      stroke="#00d4ff" 
+      stroke-width="2.5" 
+      fill="none" 
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      filter="url(#shield-glow)"
+      d="M 50 15 L 85 39 L 73 80 L 27 80 L 15 39 Z"
     />
-
-
+    
+    <!-- Inner Ghost Form -->
+    <path
+      fill="#1a1a2e"
+      stroke="#0a1929"
+      stroke-width="1"
+      d="M 50 30 C 50 30 65 32 65 40 L 60 65 L 50 75 L 40 65 L 35 40 C 35 32 50 30 50 30 Z"
+    />
 
     <!-- AI Core / Radar Eye -->
+    <circle fill="#00d4ff" cx="50" cy="48" r="4" filter="url(#accent-glow)"/>
+    <circle fill="none" stroke="#00d4ff" stroke-width="0.8" cx="50" cy="48" r="6" opacity="0.6"/>
 
-    <circle class="ghost-accent" cx="50" cy="48" r="4"/>
+    <!-- Circuit Accents Left -->
+    <path stroke="#00d4ff" stroke-width="1.2" fill="none" d="M 38 60 L 38 55 L 45 55" filter="url(#accent-glow)"/>
+    <circle fill="#00d4ff" cx="45" cy="55" r="1" filter="url(#accent-glow)"/>
 
-    <circle class="ghost-stroke" fill="none" stroke-width="0.5" cx="50" cy="48" r="6"/>
-
-
-
-    <!-- Circuit Accents -->
-
-    <path class="ghost-accent" stroke-width="1" fill="none" d="M 38 60 L 38 55 L 45 55"/>
-
-    <circle class="ghost-accent" cx="45" cy="55" r="0.8"/>
-
-
-
-    <path class="ghost-accent" stroke-width="1" fill="none" d="M 62 60 L 62 55 L 55 55"/>
-
-    <circle class="ghost-accent" cx="55" cy="55" r="0.8"/>
-
+    <!-- Circuit Accents Right -->
+    <path stroke="#00d4ff" stroke-width="1.2" fill="none" d="M 62 60 L 62 55 L 55 55" filter="url(#accent-glow)"/>
+    <circle fill="#00d4ff" cx="55" cy="55" r="1" filter="url(#accent-glow)"/>
   </g>
 
-
-
-  <!-- Wordmark "GHOST" (Right aligned/centered vertically) -->
-
-  <!-- Text converted to outlines (paths) as requested, simulating a font like Eurostile Extended or Rajdhani Bold, with wide tracking -->
-
-  <g transform="translate(95, 38)" class="ghost-text-fill">
-
+  <!-- Wordmark "GHOST" -->
+  <g transform="translate(95, 30)">
     <!-- G -->
-
-    <path d="M 20.3 14.5 C 20.3 7 15.5 2 9.8 2 C 4.1 2 0 7 0 14.5 C 0 22 4.1 27 9.8 27 C 14.2 27 18 24.5 19.5 20.8 L 16 20.8 C 15 22.5 12.8 24 9.8 24 C 6.1 24 3 20.8 3 14.5 C 3 8.2 6.1 5 9.8 5 C 12.8 5 15 6.5 16 8.2 L 19.5 8.2 C 18 4.5 14.2 2 9.8 2 Z M 16.5 15.5 L 20 15.5 L 20 18.5 L 16.5 18.5 Z"/>
-
+    <path fill="#ffffff" d="M 0 2 L 0 27 L 20 27 C 25.5 27 30 22.5 30 17 L 30 12 C 30 6.5 25.5 2 20 2 Z M 3 5 L 20 5 C 23.3 5 27 8.7 27 12 L 27 17 C 27 20.3 23.3 24 20 24 L 3 24 Z M 15 14.5 L 20 14.5 L 20 19.5 L 15 19.5 Z"/>
+    
     <!-- H -->
-
-    <path d="M 23 2 L 26 2 L 26 27 L 23 27 Z M 35 2 L 38 2 L 38 27 L 35 27 Z M 26 14.5 L 35 14.5 L 35 17.5 L 26 17.5 Z"/>
-
+    <path fill="#ffffff" d="M 33 2 L 33 27 L 36 27 L 36 2 Z M 48 2 L 48 27 L 51 27 L 51 2 Z M 33 14.5 L 51 14.5 L 51 17.5 L 33 17.5 Z"/>
+    
     <!-- O -->
-
-    <path d="M 46.8 14.5 C 46.8 7 42 2 36.3 2 C 30.6 2 26.5 7 26.5 14.5 C 26.5 22 30.6 27 36.3 27 C 42 27 46.8 22 46.8 14.5 Z M 29.5 14.5 C 29.5 8.2 32.6 5 36.3 5 C 40 5 43.1 8.2 43.1 14.5 C 43.1 20.8 40 24 36.3 24 C 32.6 24 29.5 20.8 29.5 14.5 Z"/>
-
+    <path fill="#ffffff" d="M 58 17 C 58 22.5 62.5 27 68 27 C 73.5 27 78 22.5 78 17 C 78 11.5 73.5 7 68 7 C 62.5 7 58 11.5 58 17 Z M 61 17 C 61 13 64 10 68 10 C 72 10 75 13 75 17 C 75 21 72 24 68 24 C 64 24 61 21 61 17 Z"/>
+    
     <!-- S -->
-
-    <path d="M 57 18 C 57 22 60 24.5 64 24.5 C 67.5 24.5 70 22 70 18 L 70 17 C 70 13 67.5 10 64 10 C 60 10 57 12.5 57 17 L 60 17 C 60 14.5 62 13 64 13 C 66 13 67 14.5 67 17 L 67 18 C 67 20.5 65 23 64 23 C 62 23 60 21.5 60 19 L 57 19 L 57 27 L 70 27 L 70 2 L 57 2 L 57 11 L 60 11 L 60 8 C 60 5.5 62 3 64 3 C 66 3 67 4.5 67 7 L 67 8 C 67 10.5 65 13 64 13 C 62 13 60 11.5 60 9 L 57 9 Z"/>
-
+    <path fill="#ffffff" d="M 85 10 L 85 7 L 98 7 C 100.8 7 103 9.2 103 12 L 103 15 C 103 17.8 100.8 20 98 20 L 88 20 C 85.2 20 83 22.2 83 25 L 83 28 C 83 30.8 85.2 33 88 33 L 98 33 L 98 30 L 88 30 C 87.4 30 87 29.6 87 29 L 87 26 C 87 25.4 87.4 25 88 25 L 98 25 C 100.8 25 103 22.8 103 20 L 103 17 C 103 14.2 100.8 12 98 12 L 88 12 C 85.2 12 83 9.8 83 7 L 83 4 C 83 1.2 85.2 -1 88 -1 L 98 -1 L 98 2 L 88 2 C 87.4 2 87 2.4 87 3 L 87 6 C 87 6.6 87.4 7 88 7 Z"/>
+    
     <!-- T -->
-
-    <path d="M 73 2 L 84 2 L 84 5 L 79.5 5 L 79.5 27 L 76.5 27 L 76.5 5 L 73 5 Z"/>
-
+    <path fill="#ffffff" d="M 108 2 L 119 2 L 119 5 L 114.5 5 L 114.5 27 L 111.5 27 L 111.5 5 L 108 5 Z"/>
   </g>
-
 </svg>
