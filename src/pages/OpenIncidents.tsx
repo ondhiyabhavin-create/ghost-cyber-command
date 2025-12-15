@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { initialIncidents } from '../data/mockData'
-import { Clock, Shield, Zap, CheckCircle, AlertCircle, Wifi, Truck, Lock } from 'lucide-react'
+import { Clock, Shield, Zap, CheckCircle, AlertCircle, Wifi, Truck, Lock, ArrowUp } from 'lucide-react'
 import { Incident } from '../data/mockData'
+import { useIncidents } from '../context/IncidentsContext'
 import FieldResponseCard from '../components/FieldResponseCard'
 
 const statusIcons = {
@@ -20,35 +20,46 @@ const statusColors = {
 }
 
 export default function OpenIncidents() {
-  const [incidents, setIncidents] = useState(initialIncidents)
+  const { incidents, secureIncident, escalateToCounterAttack, upgradeStatus } = useIncidents()
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(
     incidents[0] || null
   )
   const [responseMode, setResponseMode] = useState<'remote' | 'hardware'>('remote')
 
+  // Update selected incident when incidents change
+  useEffect(() => {
+    if (selectedIncident) {
+      const updated = incidents.find((inc) => inc.id === selectedIncident.id)
+      if (updated) {
+        setSelectedIncident(updated)
+      }
+    } else if (incidents.length > 0 && !selectedIncident) {
+      setSelectedIncident(incidents[0])
+    }
+  }, [incidents, selectedIncident])
+
   const handleSecureIncident = (incidentId: string) => {
-    setIncidents((prev) =>
-      prev.map((inc) => {
-        if (inc.id === incidentId && inc.status !== 'neutralized') {
-          const updatedIncident: Incident = {
-            ...inc,
-            status: 'neutralized',
-            timeline: [
-              ...inc.timeline,
-              {
-                stage: 'Secured & Neutralized',
-                timestamp: new Date().toISOString(),
-              },
-            ],
-          }
-          if (selectedIncident?.id === incidentId) {
-            setSelectedIncident(updatedIncident)
-          }
-          return updatedIncident
-        }
-        return inc
-      })
-    )
+    secureIncident(incidentId)
+    const updated = incidents.find((inc) => inc.id === incidentId)
+    if (updated) {
+      setSelectedIncident({ ...updated, status: 'neutralized' })
+    }
+  }
+
+  const handleCounterAttack = (incidentId: string) => {
+    escalateToCounterAttack(incidentId)
+    const updated = incidents.find((inc) => inc.id === incidentId)
+    if (updated) {
+      setSelectedIncident({ ...updated, status: 'counter_attack' })
+    }
+  }
+
+  const handleUpgradeStatus = (incidentId: string, newStatus: Incident['status']) => {
+    upgradeStatus(incidentId, newStatus)
+    const updated = incidents.find((inc) => inc.id === incidentId)
+    if (updated) {
+      setSelectedIncident({ ...updated, status: newStatus })
+    }
   }
 
   return (
@@ -73,39 +84,42 @@ export default function OpenIncidents() {
               Active Incidents ({incidents.filter((i) => i.status !== 'neutralized').length})
             </h2>
             <div className="space-y-2">
-              {incidents.map((incident) => (
-                <motion.button
-                  key={incident.id}
-                  onClick={() => setSelectedIncident(incident)}
-                  className={`w-full text-left p-4 rounded-lg border transition-all ${
-                    selectedIncident?.id === incident.id
-                      ? 'bg-ghost-neon-blue/20 border-ghost-neon-blue/50'
-                      : 'bg-ghost-blue/30 border-white/10 hover:bg-white/5'
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono font-bold">{incident.id}</span>
-                    <span
-                      className={`text-xs px-2 py-1 rounded ${
-                        incident.status === 'detected'
-                          ? 'bg-ghost-neon-red/20 text-ghost-neon-red'
-                          : incident.status === 'contained'
-                          ? 'bg-ghost-neon-yellow/20 text-ghost-neon-yellow'
-                          : incident.status === 'counter_attack'
-                          ? 'bg-ghost-neon-blue/20 text-ghost-neon-blue'
-                          : 'bg-ghost-neon-green/20 text-ghost-neon-green'
-                      }`}
-                    >
-                      {incident.status.replace('_', ' ').toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="text-sm text-gray-400">
-                    {incident.affectedRegion} • {incident.attackType}
-                  </div>
-                </motion.button>
-              ))}
+              {incidents.map((incident) => {
+                const updatedIncident = incidents.find((inc) => inc.id === incident.id) || incident
+                return (
+                  <motion.button
+                    key={incident.id}
+                    onClick={() => setSelectedIncident(updatedIncident)}
+                    className={`w-full text-left p-4 rounded-lg border transition-all ${
+                      selectedIncident?.id === incident.id
+                        ? 'bg-ghost-neon-blue/20 border-ghost-neon-blue/50'
+                        : 'bg-ghost-blue/30 border-white/10 hover:bg-white/5'
+                    }`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-mono font-bold">{updatedIncident.id}</span>
+                      <span
+                        className={`text-xs px-2 py-1 rounded ${
+                          updatedIncident.status === 'detected'
+                            ? 'bg-ghost-neon-red/20 text-ghost-neon-red'
+                            : updatedIncident.status === 'contained'
+                            ? 'bg-ghost-neon-yellow/20 text-ghost-neon-yellow'
+                            : updatedIncident.status === 'counter_attack'
+                            ? 'bg-ghost-neon-blue/20 text-ghost-neon-blue'
+                            : 'bg-ghost-neon-green/20 text-ghost-neon-green'
+                        }`}
+                      >
+                        {updatedIncident.status.replace('_', ' ').toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="text-sm text-gray-400">
+                      {updatedIncident.affectedRegion} • {updatedIncident.attackType}
+                    </div>
+                  </motion.button>
+                )
+              })}
             </div>
           </motion.div>
         </div>
@@ -269,58 +283,57 @@ export default function OpenIncidents() {
               {/* Action Buttons */}
               {selectedIncident.status !== 'neutralized' && (
                 <div className="mt-6 pt-6 border-t border-white/10">
-                  <div className="flex gap-4">
+                  <div className="space-y-4">
+                    {/* Status Upgrade Buttons */}
+                    <div>
+                      <h4 className="text-sm font-bold text-gray-400 mb-2">Upgrade Status</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedIncident.status === 'detected' && (
+                          <motion.button
+                            onClick={() => handleUpgradeStatus(selectedIncident.id, 'contained')}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-4 py-2 bg-ghost-neon-yellow/20 border border-ghost-neon-yellow/50 rounded-lg hover:bg-ghost-neon-yellow/30 transition-colors flex items-center gap-2"
+                          >
+                            <ArrowUp className="w-4 h-4 text-ghost-neon-yellow" />
+                            <span className="text-sm font-bold text-ghost-neon-yellow">Contain</span>
+                          </motion.button>
+                        )}
+                        {selectedIncident.status === 'contained' && (
+                          <motion.button
+                            onClick={() => handleCounterAttack(selectedIncident.id)}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-4 py-2 bg-ghost-neon-blue/20 border border-ghost-neon-blue/50 rounded-lg hover:bg-ghost-neon-blue/30 transition-colors flex items-center gap-2"
+                          >
+                            <Zap className="w-4 h-4 text-ghost-neon-blue" />
+                            <span className="text-sm font-bold text-ghost-neon-blue">Counter-Attack</span>
+                          </motion.button>
+                        )}
+                        {selectedIncident.status === 'counter_attack' && (
+                          <motion.button
+                            onClick={() => handleSecureIncident(selectedIncident.id)}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-4 py-2 bg-ghost-neon-green/20 border border-ghost-neon-green/50 rounded-lg hover:bg-ghost-neon-green/30 transition-colors flex items-center gap-2"
+                          >
+                            <Lock className="w-4 h-4 text-ghost-neon-green" />
+                            <span className="text-sm font-bold text-ghost-neon-green">Secure</span>
+                          </motion.button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Quick Secure Button (always available) */}
                     <motion.button
                       onClick={() => handleSecureIncident(selectedIncident.id)}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex-1 px-6 py-3 bg-ghost-neon-green/20 border border-ghost-neon-green/50 rounded-lg hover:bg-ghost-neon-green/30 transition-colors flex items-center justify-center gap-2"
+                      className="w-full px-6 py-3 bg-ghost-neon-green/20 border border-ghost-neon-green/50 rounded-lg hover:bg-ghost-neon-green/30 transition-colors flex items-center justify-center gap-2"
                     >
                       <Lock className="w-5 h-5 text-ghost-neon-green" />
                       <span className="font-bold text-ghost-neon-green">Secure Incident</span>
                     </motion.button>
-                    {selectedIncident.status === 'contained' && (
-                      <motion.button
-                        onClick={() => {
-                          setIncidents((prev) =>
-                            prev.map((inc) =>
-                              inc.id === selectedIncident.id
-                                ? {
-                                    ...inc,
-                                    status: 'counter_attack',
-                                    timeline: [
-                                      ...inc.timeline,
-                                      {
-                                        stage: 'Counter-Attack Initiated',
-                                        timestamp: new Date().toISOString(),
-                                      },
-                                    ],
-                                  }
-                                : inc
-                            )
-                          )
-                          if (selectedIncident) {
-                            setSelectedIncident({
-                              ...selectedIncident,
-                              status: 'counter_attack',
-                              timeline: [
-                                ...selectedIncident.timeline,
-                                {
-                                  stage: 'Counter-Attack Initiated',
-                                  timestamp: new Date().toISOString(),
-                                },
-                              ],
-                            })
-                          }
-                        }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="px-6 py-3 bg-ghost-neon-blue/20 border border-ghost-neon-blue/50 rounded-lg hover:bg-ghost-neon-blue/30 transition-colors flex items-center justify-center gap-2"
-                      >
-                        <Zap className="w-5 h-5 text-ghost-neon-blue" />
-                        <span className="font-bold text-ghost-neon-blue">Counter-Attack</span>
-                      </motion.button>
-                    )}
                   </div>
                 </div>
               )}

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { AlertTriangle, Clock, Activity } from 'lucide-react'
-import { initialIncidents } from '../data/mockData'
+import { useIncidents } from '../context/IncidentsContext'
 
 export default function Navbar() {
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [openIncidentsCount, setOpenIncidentsCount] = useState(0)
+  const { incidents } = useIncidents()
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -15,12 +15,9 @@ export default function Navbar() {
     return () => clearInterval(timer)
   }, [])
 
-  useEffect(() => {
-    const count = initialIncidents.filter(
-      (inc) => inc.status !== 'neutralized'
-    ).length
-    setOpenIncidentsCount(count)
-  }, [])
+  const openIncidentsCount = incidents.filter(
+    (inc) => inc.status !== 'neutralized'
+  ).length
 
   return (
     <motion.nav
