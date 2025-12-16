@@ -41,3 +41,4 @@
   <path stroke="#00d4ff" stroke-width="1.5" fill="none" d="M 62 60 L 62 55 L 55 55" filter="url(#glow)"/>
   <circle fill="#00d4ff" cx="55" cy="55" r="1.2" filter="url(#glow)"/>
 </svg>
+

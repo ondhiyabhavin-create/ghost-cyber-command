@@ -129,3 +129,4 @@ convert -density 300 ghost-logo.svg -resize 1000x ghost-logo-hq.png
 - **Can't insert SVG:** Your PowerPoint version may not support SVG - use PNG instead
 - **Logo too large:** Right-click → **Format Picture** → **Size** → Reduce percentage
 
+

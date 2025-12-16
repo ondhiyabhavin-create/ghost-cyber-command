@@ -151,3 +151,4 @@ export default function IntelligenceValuePanel() {
     </motion.div>
   )
 }
+

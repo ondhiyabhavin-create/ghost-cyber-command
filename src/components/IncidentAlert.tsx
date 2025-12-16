@@ -81,3 +81,4 @@ export default function IncidentAlert({ incident, onClose }: IncidentAlertProps)
     </motion.div>
   )
 }
+

@@ -112,3 +112,4 @@ export default function ThreatMap({ regions, services }: ThreatMapProps) {
     </div>
   )
 }
+
