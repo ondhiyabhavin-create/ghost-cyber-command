@@ -57,13 +57,13 @@
 
   <!-- Wordmark "GHOST" -->
   <g transform="translate(95, 30)">
-    <!-- G - Clear G shape: curved form with horizontal bar extending inward -->
-    <!-- Outer curve -->
-    <path fill="#ffffff" d="M 20 2 C 25.5 2 30 6.5 30 12 L 30 17 C 30 22.5 25.5 27 20 27 C 14.5 27 10 22.5 10 17 L 10 12 C 10 6.5 14.5 2 20 2 Z"/>
-    <!-- Inner curve (hollow center) -->
-    <path fill="#0a0a0f" d="M 20 5 C 16.5 5 13 8.5 13 12 L 13 17 C 13 20.5 16.5 24 20 24 C 23.5 24 27 20.5 27 17 L 27 12 C 27 8.5 23.5 5 20 5 Z"/>
-    <!-- Horizontal bar extending inward from right -->
-    <path fill="#ffffff" d="M 27 14.5 L 24 14.5 L 24 10 L 20 10 C 18.9 10 18 10.9 18 12 L 18 15 C 18 16.1 18.9 17 20 17 L 24 17 L 24 14.5 Z"/>
+    <!-- G - Angular G shape with flat rectangular sides -->
+    <!-- Outer frame -->
+    <path fill="#ffffff" d="M 10 2 L 30 2 L 30 14 L 27 14 L 27 5 L 13 5 L 13 24 L 30 24 L 30 27 L 10 27 Z"/>
+    <!-- Inner cutout for hollow center -->
+    <path fill="#0a0a0f" d="M 13 5 L 27 5 L 27 12 L 20 12 L 20 15 L 27 15 L 27 24 L 13 24 Z"/>
+    <!-- Horizontal bar extending inward - makes it clearly a G -->
+    <rect fill="#ffffff" x="18" y="12.5" width="9" height="3.5"/>
     
     <!-- H -->
     <path fill="#ffffff" d="M 33 2 L 33 27 L 36 27 L 36 2 Z M 48 2 L 48 27 L 51 27 L 51 2 Z M 33 14.5 L 51 14.5 L 51 17.5 L 33 17.5 Z"/>
