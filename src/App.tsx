@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { IncidentsProvider } from './context/IncidentsContext'
+import { UserRoleProvider } from './context/UserRoleContext'
 import Layout from './components/Layout'
 import CommandOverview from './pages/CommandOverview'
 import LiveThreatMap from './pages/LiveThreatMap'
@@ -16,13 +17,16 @@ import BroadcastControl from './pages/BroadcastControl'
 import ValueMetrics from './pages/ValueMetrics'
 import ElectionSecurity from './pages/ElectionSecurity'
 import IndicationWarning from './pages/IndicationWarning'
+import NetworkAssets from './pages/NetworkAssets'
+import AccessTrust from './pages/AccessTrust'
 
 function App() {
   return (
-    <IncidentsProvider>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
+    <UserRoleProvider>
+      <IncidentsProvider>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
             <Route path="/" element={<CommandOverview />} />
             <Route path="/threat-map" element={<LiveThreatMap />} />
             <Route path="/incidents" element={<OpenIncidents />} />
@@ -36,12 +40,15 @@ function App() {
             <Route path="/value-metrics" element={<ValueMetrics />} />
             <Route path="/election-security" element={<ElectionSecurity />} />
             <Route path="/indication-warning" element={<IndicationWarning />} />
+            <Route path="/network-assets" element={<NetworkAssets />} />
+            <Route path="/access-trust" element={<AccessTrust />} />
             <Route path="/audit-logs" element={<AuditLogs />} />
             <Route path="/settings" element={<SystemSettings />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </IncidentsProvider>
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </IncidentsProvider>
+    </UserRoleProvider>
   )
 }
 
